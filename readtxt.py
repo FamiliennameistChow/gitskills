@@ -9,7 +9,7 @@ with open(dataroot) as f:
     for line in f.readlines():
         line = line[:-1]
         if line.find(list[i]) == -1:
-            data = [line.split(' ')[1], line.split(' ')[4]]
+            data = [float(line.split(' ')[1])*2.54/100, float(line.split(' ')[4])*2.54/100]
             inputdata = (str(data[0]) + " " + str(data[1]))
             fp.writelines(inputdata + '\n')
             print(data)
