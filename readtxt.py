@@ -9,13 +9,13 @@ with open(dataroot) as f:
     for line in f.readlines():
         line = line[:-1]
         if line.find(list[i]) == -1:
-            data = [float(line.split(' ')[1])*2.54/100, float(line.split(' ')[4])*2.54/100]
+            data = [float(line.split(' ')[1])*2.54/10000, float(line.split(' ')[4])*2.54/10000]
             inputdata = (str(data[0]) + " " + str(data[1]))
             fp.writelines(inputdata + '\n')
             print(data)
         else:
             i += 1
-            fp = open(os.path.join("./" + str(list[i - 1].split(' ')[-1]) + ".txt"), 'w')
+            fp = open(os.path.join("./data/" + str(list[i - 1].split(' ')[-1]) + ".txt"), 'w')
             if i >= len(list):
                 i = len(list) - 1
         print(list[i-1])
