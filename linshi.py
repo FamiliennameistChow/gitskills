@@ -28,8 +28,4 @@ for b in re_list:
     if not b in rel_list:
         rel_list.append(b)
 
-
-
-
-
 print(rel_list)
