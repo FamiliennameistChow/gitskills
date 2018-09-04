@@ -54,7 +54,9 @@ class FindEdgesFliter(VConvolutionFilter):
 
 
 class BlurFliter(VConvolutionFilter):
-    ''' A blur filter with a 2-pixel radius.'''
+    ''' A blur filter with a 2-pixel radius.
+    锐化、边缘检测以及模糊等滤波器使用了高度对称的核，但使用
+    '''
 
     def __init__(self):
         kernel = np.array([[0.04, 0.04, 0.04, 0.04, 0.04],
@@ -62,4 +64,14 @@ class BlurFliter(VConvolutionFilter):
                            [0.04, 0.04, 0.04, 0.04, 0.04],
                            [0.04, 0.04, 0.04, 0.04, 0.04],
                            [0.04, 0.04, 0.04, 0.04, 0.04]])
+        VConvolutionFilter.__init__(self, kernel)
+
+
+class EmbossFilter(VConvolutionFilter):
+    '''An emboss filter with a 1-pixel radius'''
+
+    def __init__(self):
+        kernel = np.array([[-2, -1, 0],
+                           [-1, 1, 1],
+                           [0, 1, 2]])
         VConvolutionFilter.__init__(self, kernel)
