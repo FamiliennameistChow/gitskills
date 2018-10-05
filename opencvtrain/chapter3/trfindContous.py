@@ -21,7 +21,6 @@ for c in contours:
     box = np.int0(box)
     # draw contours
     cv2.drawContours(img, [box], 0, (0, 255, 0), 3)
-
     # calculate center and radius of minmum enclosing circle
     (x,y), radius = cv2.minEnclosingCircle(c)
     # cast to integers
