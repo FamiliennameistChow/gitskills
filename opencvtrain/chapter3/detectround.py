@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-plantes = cv2.imread('gg.jpg')
+plantes = cv2.imread('circles.jpg')
 gray_img = cv2.cvtColor(plantes, cv2.COLOR_BGR2GRAY)
 
 img = cv2.medianBlur(gray_img, 5)
