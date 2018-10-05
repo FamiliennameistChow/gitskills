@@ -39,7 +39,6 @@ int main(int argc, char const *argv[])
     change(DOWN);
 
 
-    system("pause");
-    
+    system("pause");   
     return 0;
 }

@@ -6,6 +6,8 @@ using namespace std;
  // 此处定义类Person
 class Person
 {
+protected:
+
     //私有的变量声明
 private:
     int _pid;
