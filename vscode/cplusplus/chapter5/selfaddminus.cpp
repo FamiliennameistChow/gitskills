@@ -13,7 +13,7 @@ void test2()
 {
     const int length = 5;
     int arr[] = {1,2,3,4,5};
-    int *p = arr;
+    int *p = arr;  //表示指向数组的首地址
     for (int i = 0;i<length;i++)
     {
         cout<<arr[i]<<endl;
@@ -31,6 +31,7 @@ void test2()
     v.push_back(4);
     v.push_back(5);
 
+    //迭代器访问
     vector<int>::const_iterator it = v.begin();
     while(it != v.end())
     {
