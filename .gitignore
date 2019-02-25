@@ -6,3 +6,5 @@
 *.exe
 
 venv/
+socket_io/
+web/
