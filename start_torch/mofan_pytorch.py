@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 # )
 
 # # ****variable****
-# tensor = torch.FloatTensor([[1,2],[3,4]])
+# tensor = torch.FloatTensor([[1, 2], [3, 4]])
 # variable = Variable(tensor, requires_grad=True)
 # t_out = torch.mean(tensor*tensor)
 # v_out = torch.mean(variable*variable)
@@ -87,3 +87,5 @@ plt.ylim((-0.2, 6))
 plt.legend(loc='best')
 
 plt.show()
+
+# help((torch.cat))
