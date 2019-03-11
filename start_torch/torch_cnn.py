@@ -94,6 +94,14 @@ for epoch in range(EPOCH):
         loss.backward()
         optimizer.step()
 
+        if step % 50 == 0:
+            test_output = cnn(test_x)
+            pred_y = torch.max(test_output, 1)[1].data.numpy()
+            accuracy = float((pred_y == test_y.data.numpy()).astype(int).sum()) / float(test_y.size(0))
+            print(
+                'Epoch:', epoch, "|train loss:", loss.data.numpy(), "| test accuracy: %.2f" % accuracy
+            )
+
 
 test_output = cnn(test_x[:10])
 pred_y = torch.max(test_output, 1)[1].data.numpy().squeeze()
