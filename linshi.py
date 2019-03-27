@@ -31,15 +31,22 @@
 # print(rel_list)
 
 
-buf = {}
-buf['value'] = []
-for i in range(12):
-    print(type(buf["value"]))
-    buf['value'] = buf['value'].extend(i)
-    if 'value' in buf:
-        buf['value'] = buf['value'] + [i+13]
-print(buf)
+# buf = {}
+# buf['value'] = []
+# for i in range(12):
+#     print(type(buf["value"]))
+#     buf['value'] = buf['value'].extend(i)
+#     if 'value' in buf:
+#         buf['value'] = buf['value'] + [i+13]
+# print(buf)
 
 # list = []
 # # list = list.append(1)
 # print(list)
+
+i = 0
+while True:
+    i += 1
+    if i == 5:
+        continue
+    print(i)

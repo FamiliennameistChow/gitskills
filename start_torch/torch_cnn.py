@@ -22,9 +22,10 @@ train_data = torchvision.datasets.MNIST(
 # print(train_data.train_labels.size())
 #
 # # 显示第一张图
-# plt.imshow(train_data.train_data[1].numpy(), cmap='gray')
-# plt.title('%i' % train_data.train_labels[1])
-# plt.show()
+plt.imshow(train_data.train_data[1].numpy(), cmap='gray')
+plt.title('%i' % train_data.train_labels[1])
+plt.show()
+
 
 
 # data loader
@@ -108,3 +109,8 @@ pred_y = torch.max(test_output, 1)[1].data.numpy().squeeze()
 print(pred_y, 'prediction number')
 print(test_y[:10].numpy(), 'real number')
 
+
+for i in range(10):
+    plt.imshow(test_data.test_data[i].numpy(), cmap='gray')
+    plt.title('%i' % test_data.test_labels[i])
+    plt.show()

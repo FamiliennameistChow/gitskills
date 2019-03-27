@@ -8,4 +8,4 @@
 venv/
 socket_io/
 web/
-start_torch/mnist/*
+start_torch/mnist*/*
