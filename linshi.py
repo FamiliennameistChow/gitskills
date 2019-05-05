@@ -1,52 +1,20 @@
-# nums = [-1, 0, 1, 2, -1, -4]
-# nums = [0, 0, 0, 0]
+# from sys import argv
 #
-# re_list = []
-# a = len(nums)
-# break_flag = False
-# for i in range(a):
-#     # tmp.extend([nums[i]])
-#     for j in range(i + 1, a):
-#         num = nums[i] + nums[j]
-#         # tmp.extend([nums[j]])
-#         for k in range(j + 1, a):
-#             if num + nums[k] == 0:
-#                 tmp = []
-#                 tmp.extend([nums[i], nums[j], nums[k]])
-#                 tmp.sort()
-#                 re_list.append(tmp)
-#                 break
-#
-# for c in range(len(re_list)):
-#     for b in range(c+1, len(re_list)):
-#         if re_list[c] == re_list[b]:
-#             re_list.remove(re_list[c])
+# try:
+#     port = int(argv[argv.index('-P') + 1])
+# except ValueError:
+#     port = 5008
+# except IndexError:
+#     port = 5008
+# finally:
+#     print("Web Port:", port)
 
+import cv2
+import numpy as np
 
-# rel_list = []
-# for b in re_list:
-#     if not b in rel_list:
-#         rel_list.append(b)
-#
-# print(rel_list)
-
-
-# buf = {}
-# buf['value'] = []
-# for i in range(12):
-#     print(type(buf["value"]))
-#     buf['value'] = buf['value'].extend(i)
-#     if 'value' in buf:
-#         buf['value'] = buf['value'] + [i+13]
-# print(buf)
-
-# list = []
-# # list = list.append(1)
-# print(list)
-
-i = 0
-while True:
-    i += 1
-    if i == 5:
-        continue
-    print(i)
+fs = cv2.FileStorage('abc.xml', cv2.FileStorage_WRITE)
+fs.write('mat1', np.random.uniform(0, 1, [2, 2]))
+fs.release()
+fs2 = cv2.FileStorage('abc.xml', cv2.FileStorage_READ)
+mat1 = fs2.getNode('mat1').mat()
+print(mat1)

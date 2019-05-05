@@ -23,9 +23,9 @@ train_data = dsets.MNIST(
 )
 test_data = dsets.MNIST(root='./mnist/', train=False)
 
-# 为了节约时间, 我们测试时只测试前2000个
-test_x = torch.unsqueeze(test_data.test_data, dim=1).type(torch.FloatTensor)[:2000]/255.  # shape from (2000, 28, 28) to (2000, 1, 28, 28), value in range(0,1)
-test_y = test_data.test_labels[:2000]
+test_data = dsets.MNIST(root='./mnist/', train=False, transform=transforms.ToTensor())
+test_x = test_data.test_data.type(torch.FloatTensor)[:2000]/255.   # shape (2000, 28, 28) value in range(0,1)
+test_y = test_data.test_labels.numpy()[:2000]    # covert to numpy array
 
 train_loader = Data.DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=True)
 
@@ -49,6 +49,7 @@ class RNN(nn.Module):
         # h_c shape (n_layers, batch, hidden_size)
         r_out, (h_n, h_c) = self.rnn(x, None)  # x (batch, time_step, input)
         out = self.out(r_out[:, -1, :])   # (batch, time_step, input)
+        return out
 
 
 rnn = RNN()
@@ -59,13 +60,29 @@ loss_func = nn.CrossEntropyLoss()
 
 for epoch in range(EPOCH):
     for step, (x, y) in enumerate(train_loader):   # gives batch data
-        b_x = Variable(x.view(-1, 28, 28))   # reshape x to (batch, time_step, input_size)
-        b_y = Variable(y)
-        output = rnn(b_x)               # rnn output
-        loss = loss_func(output, b_y)   # cross entropy loss
+        # b_x = Variable(x.view(-1, 28, 28))   # reshape x to (batch, time_step, input_size)
+        # b_y = Variable(y)
+        output = rnn(x.view(-1, 28, 28))               # rnn output
+        loss = loss_func(output, y)   # cross entropy loss
         optimizer.zero_grad()           # clear gradients for this training step
         loss.backward()                 # backpropagation, compute gradients
         optimizer.step()                # apply gradients
+
+        if step % 50 == 0:
+            test_output = rnn(test_x)  # (samples, time_step, input_size)
+            pred_y = torch.max(test_output, 1)[1].data.numpy()
+            accuracy = float((pred_y == test_y).astype(int).sum()) / float(test_y.size)
+            print('Epoch: ', epoch, '| train loss: %.4f' % loss.data.numpy(), '| test accuracy: %.2f' % accuracy)
+
+
+# print 10 predictions from test data
+test_output = rnn(test_x[:10].view(-1, 28, 28))
+pred_y = torch.max(test_output, 1)[1].data.numpy()
+print(pred_y, 'prediction number')
+print(test_y[:10], 'real number')
+print("0000")
+
+
 
 
 

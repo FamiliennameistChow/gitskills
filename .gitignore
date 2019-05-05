@@ -9,3 +9,4 @@ venv/
 socket_io/
 web/
 start_torch/mnist*/*
+opencv_c/
