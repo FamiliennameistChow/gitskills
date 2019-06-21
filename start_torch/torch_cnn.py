@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import torchvision
 
 # Hyper Parameters
-EPOCH = 1
+EPOCH = 3
 BATCH_SIZE = 50
 LR = 0.001
 DOWNLOAD_MNIST = False
@@ -22,8 +22,8 @@ train_data = torchvision.datasets.MNIST(
 # print(train_data.train_labels.size())
 #
 # # 显示第一张图
-plt.imshow(train_data.train_data[1].numpy(), cmap='gray')
-plt.title('%i' % train_data.train_labels[1])
+plt.imshow(train_data.data[1].numpy(), cmap='gray')
+plt.title('%i' % train_data.targets[1])
 plt.show()
 
 
@@ -47,8 +47,8 @@ test_data = torchvision.datasets.MNIST(
 
 # 选取前2000个数据做测试
 # shape from (2000, 28, 28) to (2000, 1, 28, 28), value in range(0,1)
-test_x = torch.unsqueeze(test_data.test_data, dim=1).type(torch.FloatTensor)[:2000]/255
-test_y = test_data.test_labels[:2000]
+test_x = torch.unsqueeze(test_data.data, dim=1).type(torch.FloatTensor)[:2000]/255
+test_y = test_data.targets[:2000]
 
 
 class CNN(nn.Module):
@@ -84,12 +84,19 @@ class CNN(nn.Module):
 cnn = CNN()
 # print(cnn)
 
+# 生成一个样本供网络前向传播 forward()
+example = torch.rand(1, 1, 28, 28)
+
+# 使用 torch.jit.trace 生成 torch.jit.ScriptModule 来跟踪
+traced_script_module = torch.jit.trace(cnn, example)
+
 optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)
 loss_func = nn.CrossEntropyLoss()
 
 for epoch in range(EPOCH):
     for step, (b_x, b_y) in enumerate(train_loader):
-        output = cnn(b_x)
+        # output = cnn(b_x)
+        output = traced_script_module(b_x)
         loss = loss_func(output, b_y)
         optimizer.zero_grad()
         loss.backward()
@@ -104,6 +111,10 @@ for epoch in range(EPOCH):
             )
 
 
+# torch.save(cnn.state_dict(), './mnist_model_param.pt')
+# torch.save(cnn, 'mnist_model.pt')
+traced_script_module.save('mnist_model.pt')
+
 test_output = cnn(test_x[:10])
 pred_y = torch.max(test_output, 1)[1].data.numpy().squeeze()
 print(pred_y, 'prediction number')
@@ -111,6 +122,6 @@ print(test_y[:10].numpy(), 'real number')
 
 
 for i in range(10):
-    plt.imshow(test_data.test_data[i].numpy(), cmap='gray')
-    plt.title('%i' % test_data.test_labels[i])
+    plt.imshow(train_data.data[i].numpy(), cmap='gray')
+    plt.title('%i' % train_data.targets[i])
     plt.show()

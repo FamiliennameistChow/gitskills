@@ -49,25 +49,26 @@ def detecte_circle(img):
     # lower_red = np.array([0, 43, 46])
     # upper_red = np.array([10, 255, 255])
 
-    lower_red = np.array([100, 43, 46])
-    upper_red = np.array([250, 255, 255])
+    lower_red = np.array([125, 50, 46])
+    upper_red = np.array([180, 255, 255])
 
     mask = cv2.inRange(hsv, lower_red, upper_red)
     cv2.imshow('mask', mask)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
+    cv2.waitKey()
+    cv2.destroyAllWindows()
     dst = cv2.bitwise_and(img, img, mask=mask)
-    # cv2.imshow('dst', dst)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
+    cv2.imshow('dst', dst)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
     gray = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
-    # cv2.imshow('gray', gray)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
+    cv2.imshow('gray', gray)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
     gray = cv2.GaussianBlur(gray, (3, 3), 0)
     cv2.imshow('gray_G', gray)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+
     # 输出图像大小，方便根据图像大小调节minRadius和maxRadius
     print(img.shape)
     # 霍夫变换圆检测
@@ -119,40 +120,40 @@ def detecte_circle(img):
             # 圆的基本信息
             print('radius:', circle[2])
             circle_img = img[int(y-r/2):int(y+r/2), int(x-r/2):int(x+r/2)]
-            # cv2.imshow("corp", circle_img)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.imshow("corp", circle_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             angle = get_minAreaRect(circle_img)[-1]
             rotated = rotate_bound(circle_img, angle)
             cv2.imshow("rotate", rotated)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             rotated_gray = cv2.cvtColor(rotated, cv2.COLOR_BGR2GRAY)
-            # cv2.imshow("rotated_gray", rotated_gray)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.imshow("rotated_gray", rotated_gray)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             ret, binary = cv2.threshold(rotated_gray, 100, 255, cv2.THRESH_BINARY)
-            # cv2.imshow("binary", binary)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.imshow("binary", binary)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            # cv2.drawContours(rotated, contours[0], -1, (0, 255, 0), 1)
-            # cv2.imshow("rotate", rotated)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.drawContours(rotated, contours[0], -1, (0, 255, 0), 1)
+            cv2.imshow("rotate", rotated)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             if len(contours) == 0:
                 number = 1
             else:
                 x_1, y_1, w_1, h_1 = cv2.boundingRect(contours[0])
                 cv2.rectangle(rotated, (x_1, y_1), (x_1+w_1, y_1+h_1), (0, 255, 0), 1)
-                # cv2.imshow("rotated", rotated)
-                # cv2.waitKey(0)
-                # cv2.destroyAllWindows()
+                cv2.imshow("rotated", rotated)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
 
                 img_nu = binary[y_1 - padding:y_1+h_1 + padding, x_1 - padding:x_1+w_1 + padding]
                 cv2.imshow("img_nu", img_nu)
-                # cv2.waitKey(0)
-                # cv2.destroyAllWindows()
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
                 roismall = cv2.resize(img_nu, (resize_img_y, resize_img_x), interpolation=cv2.INTER_CUBIC)
                 roismall = roismall.reshape((1, resize_img_y*resize_img_x))
                 roismall = np.float32(roismall)
@@ -184,30 +185,31 @@ resize_img_x = 56
 # # # img = cv2.imread('circle2.png')
 # # # img = cv2.imread('112.png')
 # # # img = cv2.imread('233.png')
-# img = cv2.imread('5555.jpg')
-# # img = cv2.imread('4444.jpg')
-# # img = cv2.imread('no.png')
-#
-# cv2.imshow('img', img)
-# cv2.waitKey()
-# cv2.destroyAllWindows()
-# detecte_circle(img)
 
+img = cv2.imread('./data/1.png')
+# img = cv2.imread('4444.jpg')
+# img = cv2.imread('no.png')
 
-# # ******** 摄像头获取图片************
-videoCaputer = cv2.VideoCapture(1)
-# videoCaputer.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 1920
-# videoCaputer.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 1080
-
-while True:
-    _, frame = videoCaputer.read()
-    print(frame.shape)
-    cv2.imshow("test", frame)
-    if cv2.waitKey(1) == 27:
-        break
-    detecte_circle(frame)
-videoCaputer.release()
+cv2.imshow('img', img)
+cv2.waitKey()
 cv2.destroyAllWindows()
+detecte_circle(img)
+
+
+# # # # ******** 摄像头获取图片************
+# videoCaputer = cv2.VideoCapture(1)
+# # # videoCaputer.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 1920
+# # # videoCaputer.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 1080
+# #
+# while True:
+#     _, frame = videoCaputer.read()
+#     print(frame.shape)
+#     cv2.imshow("test", frame)
+#     if cv2.waitKey(1) == 27:
+#         break
+#     detecte_circle(frame)
+# videoCaputer.release()
+# cv2.destroyAllWindows()
 
 
 
